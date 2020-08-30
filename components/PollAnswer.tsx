@@ -55,7 +55,10 @@ const CheckImg = styled.img`
   margin-left: 0.5rem;
 `;
 
-const PollAnswerVotes = styled.div``;
+const PollText = styled.div``;
+const PollTextBold = styled(PollText)`
+  font-weight: ${(props: { bold: boolean }) => props.bold ? '1000' : 'normal'};
+`
 
 export default function PollAnswer({
   answer,
@@ -78,11 +81,11 @@ export default function PollAnswer({
         />
       )}
       <PollAnswerTextContainer>
-        {answer.text}
+        <PollTextBold bold={displayVotes && greatest}>{answer.text}</PollTextBold>
         {selected && <CheckImg src={require('../static/check-circle.svg')} />}
       </PollAnswerTextContainer>
       {displayVotes && (
-        <PollAnswerVotes>{votesPercentage.toFixed(0)}%</PollAnswerVotes>
+        <PollTextBold bold={displayVotes && greatest}>{votesPercentage.toFixed(0)}%</PollTextBold>
       )}
     </PollAnswerContainer>
   );
