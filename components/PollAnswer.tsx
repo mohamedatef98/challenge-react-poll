@@ -7,6 +7,13 @@ type Props = {
   totalVotes: number;
   onSelect: () => void;
   selected: boolean;
+  displayVotes: boolean;
+  greatest: boolean;
+};
+
+const COLORS = {
+  greatest: 'cyan',
+  normal: '#e8e8e8',
 };
 
 const PollAnswerContainer = styled.button`
@@ -19,6 +26,19 @@ const PollAnswerContainer = styled.button`
   background-color: transparent;
   border: 1px solid #ccc;
   border-radius: 5px;
+  position: relative;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const PollVotesPercentageBackground = styled.div`
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #e8e8e8;
+  z-index: -1;
 `;
 
 const PollAnswerTextContainer = styled.div`
@@ -40,16 +60,28 @@ export default function PollAnswer({
   totalVotes,
   onSelect,
   selected,
+  displayVotes,
+  greatest,
 }: Props) {
   const votesPercentage = (answer.votes / totalVotes) * 100;
 
   return (
     <PollAnswerContainer onClick={onSelect}>
+      {displayVotes && (
+        <PollVotesPercentageBackground
+          style={{
+            width: `${votesPercentage}%`,
+            backgroundColor: greatest ? COLORS.greatest : COLORS.normal,
+          }}
+        />
+      )}
       <PollAnswerTextContainer>
         {answer.text}
         {selected && <CheckImg src={require('../static/check-circle.svg')} />}
       </PollAnswerTextContainer>
-      <PollAnswerVotes>{votesPercentage.toFixed(0)}%</PollAnswerVotes>
+      {displayVotes && (
+        <PollAnswerVotes>{votesPercentage.toFixed(0)}%</PollAnswerVotes>
+      )}
     </PollAnswerContainer>
   );
 }

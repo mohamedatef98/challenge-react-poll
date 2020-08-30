@@ -9,8 +9,12 @@ type Props = {
 };
 
 const shuffleAnswers = (answers: Answer[]) => shuffle(answers);
+
 const getTotalVotes = (qanda: QandA) =>
   qanda.answers.reduce((acc, { votes }) => (acc += votes), 0);
+
+const sortAnswersByPopularity = (qanda: QandA) =>
+  qanda.answers.sort((a, b) => (a.votes > b.votes ? -1 : 1));
 
 const PollQuestionContainer = styled.div`
   margin: 2rem auto;
@@ -33,14 +37,18 @@ const PollVotes = styled.p`
 
 export default function PollQuestion({ qanda }: Props) {
   const [shuffledAnswers] = React.useState(shuffleAnswers(qanda.answers));
-  const [totalVotes] = React.useState(getTotalVotes(qanda));
   const [selectedAnswer, setSelectedAnswer] = React.useState<Answer | null>(
     null
   );
+  const [displayVotes, setDisplayVotes] = React.useState<boolean>(false);
+
+  const totalVotes = getTotalVotes(qanda);
+  const mostPopularAnswer = sortAnswersByPopularity(qanda)[0];
 
   const handleAnswerSelected = (answer: Answer) => {
     if (selectedAnswer === null) {
       setSelectedAnswer(answer);
+      setDisplayVotes(true);
     }
   };
 
@@ -55,6 +63,8 @@ export default function PollQuestion({ qanda }: Props) {
             totalVotes={totalVotes}
             selected={ans === selectedAnswer}
             onSelect={() => handleAnswerSelected(ans)}
+            displayVotes={displayVotes}
+            greatest={mostPopularAnswer === ans}
           />
         ))}
       </PollAnswersContainer>
