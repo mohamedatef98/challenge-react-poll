@@ -34,13 +34,28 @@ const PollVotes = styled.p`
 export default function PollQuestion({ qanda }: Props) {
   const [shuffledAnswers] = React.useState(shuffleAnswers(qanda.answers));
   const [totalVotes] = React.useState(getTotalVotes(qanda));
+  const [selectedAnswer, setSelectedAnswer] = React.useState<Answer | null>(
+    null
+  );
+
+  const handleAnswerSelected = (answer: Answer) => {
+    if (selectedAnswer === null) {
+      setSelectedAnswer(answer);
+    }
+  };
 
   return (
     <PollQuestionContainer>
       <PollQuestionHeader>{qanda.question.text}</PollQuestionHeader>
       <PollAnswersContainer>
         {shuffledAnswers.map((ans, index) => (
-          <PollAnswer answer={ans} key={index} totalVotes={totalVotes} />
+          <PollAnswer
+            answer={ans}
+            key={index}
+            totalVotes={totalVotes}
+            selected={ans === selectedAnswer}
+            onSelect={() => handleAnswerSelected(ans)}
+          />
         ))}
       </PollAnswersContainer>
       <PollVotes>{totalVotes} votes</PollVotes>
