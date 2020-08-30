@@ -1,14 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { shuffle } from 'lodash';
 import { QandA, Answer } from '../types';
 import PollAnswer from './PollAnswer';
 
 type Props = {
   qanda: QandA;
 };
-
-const shuffleAnswers = (answers: Answer[]) => shuffle(answers);
 
 const getTotalVotes = (qanda: QandA) =>
   qanda.answers.reduce((acc, { votes }) => (acc += votes), 0);
@@ -36,7 +33,6 @@ const PollVotes = styled.p`
 `;
 
 export default function PollQuestion({ qanda }: Props) {
-  const [shuffledAnswers] = React.useState(shuffleAnswers(qanda.answers));
   const [selectedAnswer, setSelectedAnswer] = React.useState<Answer | null>(
     null
   );
@@ -56,7 +52,7 @@ export default function PollQuestion({ qanda }: Props) {
     <PollQuestionContainer>
       <PollQuestionHeader>{qanda.question.text}</PollQuestionHeader>
       <PollAnswersContainer>
-        {shuffledAnswers.map((ans, index) => (
+        {qanda.answers.map((ans, index) => (
           <PollAnswer
             answer={ans}
             key={index}
