@@ -5,6 +5,7 @@ import PollAnswer from './PollAnswer';
 
 type Props = {
   qanda: QandA;
+  onAnswerSelected: (answer: Answer) => void
 };
 
 const getTotalVotes = (qanda: QandA) =>
@@ -32,7 +33,7 @@ const PollVotes = styled.p`
   color: #9d9d9d;
 `;
 
-export default function PollQuestion({ qanda }: Props) {
+export default function PollQuestion({ qanda, onAnswerSelected }: Props) {
   const [selectedAnswer, setSelectedAnswer] = React.useState<Answer | null>(
     null
   );
@@ -45,6 +46,7 @@ export default function PollQuestion({ qanda }: Props) {
     if (selectedAnswer === null) {
       setSelectedAnswer(answer);
       setDisplayVotes(true);
+      onAnswerSelected(answer)
     }
   };
 
@@ -57,7 +59,7 @@ export default function PollQuestion({ qanda }: Props) {
             answer={ans}
             key={index}
             totalVotes={totalVotes}
-            selected={ans === selectedAnswer}
+            selected={selectedAnswer !== null && ans.text === selectedAnswer.text}
             onSelect={() => handleAnswerSelected(ans)}
             displayVotes={displayVotes}
             greatest={mostPopularAnswer === ans}
