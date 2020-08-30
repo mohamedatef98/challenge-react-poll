@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import { Answer } from '../types';
 
 type Props = {
@@ -11,10 +12,10 @@ type Props = {
   greatest: boolean;
 };
 
-const COLORS = {
-  greatest: 'cyan',
-  normal: '#e8e8e8',
-};
+enum Colors {
+  greatest = '#00ffff',
+  normal = '#e8e8e8',
+}
 
 const PollAnswerContainer = styled.button`
   display: flex;
@@ -32,7 +33,7 @@ const PollAnswerContainer = styled.button`
   }
 `;
 
-const PollVotesPercentageBackground = styled.div`
+const PollVotesPercentageBackground = styled(motion.div)`
   height: 100%;
   position: absolute;
   top: 0;
@@ -69,9 +70,9 @@ export default function PollAnswer({
     <PollAnswerContainer onClick={onSelect}>
       {displayVotes && (
         <PollVotesPercentageBackground
-          style={{
+          animate={{
             width: `${votesPercentage}%`,
-            backgroundColor: greatest ? COLORS.greatest : COLORS.normal,
+            backgroundColor: greatest ? Colors.greatest : Colors.normal,
           }}
         />
       )}
