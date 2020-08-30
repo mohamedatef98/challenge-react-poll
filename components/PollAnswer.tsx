@@ -28,6 +28,7 @@ const PollAnswerContainer = styled.button`
   border: 1px solid #ccc;
   border-radius: 5px;
   position: relative;
+  cursor: pointer;
   &:focus {
     outline: none;
   }
