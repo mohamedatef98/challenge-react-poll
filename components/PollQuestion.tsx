@@ -8,6 +8,7 @@ type Props = {
 };
 
 const shuffleAnswers = (answers: Answer[]) => shuffle(answers);
+const getTotalVotes = (qanda: QandA) => qanda.answers.reduce((acc, { votes }) => acc += votes, 0);
 
 const PollQuestionContainer = styled.div`
     margin: 2rem auto;
@@ -19,12 +20,20 @@ const PollQuestionContainer = styled.div`
 `
 const PollQuestionHeader = styled.h2``
 
+const PollVotes = styled.p`
+    color: #9d9d9d;
+`
+
 export default function PollQuestion ({ qanda }: Props) {
     const [,] = React.useState(shuffleAnswers(qanda.answers));
+    const [totalVotes] = React.useState(getTotalVotes(qanda))
 
     return <PollQuestionContainer>
         <PollQuestionHeader>
             {qanda.question.text}
         </PollQuestionHeader>
-    </PollQuestionContainer>
+        <PollVotes>
+            {totalVotes} votes
+        </PollVotes>
+    </PollQuestionContainer>;
 }
