@@ -10,12 +10,7 @@ type Props = {
 const shuffleQandAs = (qandas: QandA[]) => shuffle(qandas);
 
 export default function Poll({ qandas }: Props) {
-  const [shuffledQandAs, setSuffledQandAs] = React.useState(shuffleQandAs(qandas.questions));
-
-  React.useEffect(
-    () => setSuffledQandAs(shuffleQandAs(qandas.questions)),
-    [qandas.questions]
-  );
+  const [shuffledQandAs] = React.useState<QandA[]>(shuffleQandAs(qandas.questions));
 
   return <PollQuestion qanda={shuffledQandAs[0]} />;
 }
